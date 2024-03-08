@@ -13,6 +13,10 @@ class Food {
 
     public:
     Vector2 position = {5, 6};
+    
+    Food() {
+        
+    }
 
     void Draw() {
         DrawRectangle(position.x * cellSize, position.y * cellSize, cellSize, cellSize, darkGreen);
