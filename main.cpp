@@ -119,6 +119,7 @@ class Food {
 };
 
 class Game {
+
     public: 
     Snake snake = Snake();
     Food food = Food(snake.body);
@@ -134,6 +135,7 @@ class Game {
         snake.Update();
         CheckCollisionWithFood();
         CheckCollisionWithEdges();
+        CheckCollisionWithTail();
         }
     }
 
@@ -167,6 +169,16 @@ class Game {
         running = false;
 
         //can eventually add a game over window with a dotted line border
+    }
+
+    void CheckCollisionWithTail() {
+
+        deque<Vector2> headlessBody = snake.body; 
+        headlessBody.pop_front();
+        if(ElementinDeque(snake.body[0], headlessBody)) {
+
+            GameOver();
+        }
     }
 };
 
