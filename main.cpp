@@ -96,27 +96,30 @@ int main () {
         if(EventTriggered(0.2)){
             snake.Update();
         }
-        //snake.Update();
 
-        if(IsKeyPressed(KEY_UP)) {
+        //KEY_UP OR W
+        if(IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W)) {
 
             snake.direction = {0, -1};
 
         }
-
-        if(IsKeyPressed(KEY_DOWN)) {
+        
+        //KEY_DOWN or S
+        if(IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S)) {
 
             snake.direction = {0, 1};
     
         }
 
-        if(IsKeyPressed(KEY_LEFT)) {
+        //KEY_LEFT or A
+        if(IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) {
 
             snake.direction = {-1, 0};
     
         }
 
-        if(IsKeyPressed(KEY_RIGHT)) {
+        //KEY)RIGHT or D
+        if(IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) {
 
             snake.direction = {1, 0};
     
