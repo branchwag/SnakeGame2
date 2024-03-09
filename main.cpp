@@ -124,7 +124,28 @@ class Game {
     Snake snake = Snake();
     Food food = Food(snake.body);
     bool running = true;
-    int score = 0; 
+    int score = 0;
+    Sound eatSound;
+    Sound wallSound; 
+    Sound gameSoundTrack;
+
+    Game() {
+        InitAudioDevice();
+        eatSound =  LoadSound("sounds/eat2.mp3");
+        wallSound =  LoadSound("sounds/wall.mp3");
+        gameSoundTrack = LoadSound("sounds/suits-you-69233.mp3");
+
+        PlaySound(gameSoundTrack);
+        SetSoundVolume(gameSoundTrack, 0.3); 
+    
+    }
+
+    ~Game() {
+        UnloadSound(eatSound);
+        UnloadSound(wallSound);
+        UnloadSound(gameSoundTrack);
+        CloseAudioDevice();
+    }
 
     void Draw() {
         food.Draw();
@@ -148,6 +169,7 @@ class Game {
             food.position = food.GenerateRandomPos(snake.body);
             snake.addSegment = true;
             score++;
+            PlaySound(eatSound);
         };
     };
 
@@ -170,6 +192,8 @@ class Game {
         food.position = food.GenerateRandomPos(snake.body);
         running = false;
         score = 0;
+        PlaySound(wallSound);
+        StopSound(gameSoundTrack);
 
         //can eventually add a game over window with a dotted line border
     }
