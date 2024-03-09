@@ -134,10 +134,6 @@ class Game {
         eatSound =  LoadSound("sounds/eat2.mp3");
         wallSound =  LoadSound("sounds/wall.mp3");
         gameSoundTrack = LoadSound("sounds/suits-you-69233.mp3");
-
-        PlaySound(gameSoundTrack);
-        SetSoundVolume(gameSoundTrack, 0.3); 
-    
     }
 
     ~Game() {
@@ -158,6 +154,10 @@ class Game {
         CheckCollisionWithFood();
         CheckCollisionWithEdges();
         CheckCollisionWithTail();
+        if (!IsSoundPlaying(gameSoundTrack)) {
+            PlaySound(gameSoundTrack);
+            SetSoundVolume(gameSoundTrack, 0.3); 
+            }
         }
     }
 
