@@ -185,7 +185,7 @@ class Game {
 int main () {
 
     cout << "Starting the game" << endl;
-    InitWindow(cellSize * cellCount, cellSize * cellCount, "Retro Snake");
+    InitWindow(2*offset + cellSize * cellCount, 2*offset + cellSize * cellCount, "Retro Snake");
     SetTargetFPS(60);
 
     // Food food = Food();
@@ -233,8 +233,9 @@ int main () {
         }
 
         ClearBackground(green);
-        game.Draw();
 
+        game.Draw();
+         DrawRectangleLinesEx(Rectangle{(float)offset - 5, (float)offset - 5, (float)cellSize * cellCount + 10, (float)cellSize * cellCount + 10}, 5, darkGreen);
         EndDrawing();
     }
 
