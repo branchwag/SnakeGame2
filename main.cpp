@@ -69,6 +69,11 @@ class Snake {
 
         }
 
+        void Reset() {
+            body = {Vector2{6,9}, Vector2{5,9}, Vector2{4,9}};
+            direction = {1,0};
+        }
+
 };
 
 class Food {
@@ -116,7 +121,8 @@ class Food {
 class Game {
     public: 
     Snake snake = Snake();
-    Food food = Food(snake.body); 
+    Food food = Food(snake.body);
+    bool running = true; 
 
     void Draw() {
         food.Draw();
@@ -124,8 +130,11 @@ class Game {
     }
 
     void Update () {
+        if(running) {
         snake.Update();
         CheckCollisionWithFood();
+        CheckCollisionWithEdges();
+        }
     }
 
     void CheckCollisionWithFood() {
@@ -137,6 +146,28 @@ class Game {
             snake.addSegment = true;
         };
     };
+
+    void CheckCollisionWithEdges() {
+        if(snake.body[0].x == cellCount || snake.body[0].x == -1) {
+
+            GameOver();
+
+        }
+        if(snake.body[0].y == cellCount || snake.body[0].y == -1) {
+
+            GameOver();
+
+        }
+    }
+
+    void GameOver() {
+        //cout << "Game over" << endl;
+        snake.Reset();
+        food.position = food.GenerateRandomPos(snake.body);
+        running = false;
+
+        //can eventually add a game over window with a dotted line border
+    }
 };
 
 int main () {
@@ -161,6 +192,7 @@ int main () {
         if((IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W)) && game.snake.direction.y != 1) {
 
             game.snake.direction = {0, -1};
+            game.running = true;
 
         }
         
@@ -168,6 +200,7 @@ int main () {
         if((IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S)) && game.snake.direction.y != -1) {
 
             game.snake.direction = {0, 1};
+            game.running = true;
     
         }
 
@@ -175,6 +208,7 @@ int main () {
         if((IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) && game.snake.direction.x != 1) {
 
             game.snake.direction = {-1, 0};
+            game.running = true;
     
         }
 
@@ -182,6 +216,7 @@ int main () {
         if((IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) && game.snake.direction.x != -1) {
 
             game.snake.direction = {1, 0};
+            game.running = true;
     
         }
 
