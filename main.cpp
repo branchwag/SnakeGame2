@@ -9,6 +9,7 @@ Color darkGreen = {43, 51, 24, 255};
 
 int cellSize = 30;
 int cellCount = 25;
+int offset = 75;
 
 class Snake {
     
@@ -17,11 +18,12 @@ class Snake {
 
         void Draw() {
 
-            for(int i =0; i < body.size(); i++){
+            for(unsigned int i =0; i < body.size(); i++){
 
-                int x = body[i].x;
-                int y = body[i].y;
-                DrawRectangle(x*cellSize, y*cellSize, cellSize, cellSize, darkGreen);
+                float x = body[i].x;
+                float y = body[i].y;
+                Rectangle segment = Rectangle{offset + x * cellSize, offset + y * cellSize, (float)cellSize, (float)cellSize};
+                DrawRectangleRounded(segment, 0.5, 6, darkGreen);
             }
         }
 
