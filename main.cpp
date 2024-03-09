@@ -14,6 +14,18 @@ int offset = 75;
 
 double lastUpdateTime = 0;
 
+bool ElementinDeque(Vector2 element, deque<Vector2> deque) {
+
+    for(unsigned int i = 0; i < deque.size(); i++) {
+
+        if(Vector2Equals(deque[i], element)) {
+
+            return true; 
+        }
+    }
+    return false;
+}
+
 bool EventTriggered(double interval)
 {
     double currentTime = GetTime();
@@ -28,12 +40,12 @@ bool EventTriggered(double interval)
 class Snake {
     
     public :
-        deque<Vector2> body = { Vector2{6,9}, Vector2{5,9}, Vector2{4,9} };
-        Vector2 direction = {1,0};
+        deque<Vector2> body = {Vector2{6, 9}, Vector2{5, 9}, Vector2{4, 9}};
+        Vector2 direction = {1, 0};
 
         void Draw() {
 
-            for(unsigned int i =0; i < body.size(); i++){
+            for(unsigned int i = 0; i < body.size(); i++){
 
                 float x = body[i].x;
                 float y = body[i].y;
@@ -55,11 +67,11 @@ class Food {
     Vector2 position;
     Texture2D texture;
     
-    Food() {
+    Food(deque<Vector2> snakeBody) {
         Image image = LoadImage("graphics/food.png");
         texture = LoadTextureFromImage(image);
         UnloadImage(image);
-        position = GenerateRandomPos();
+        position = GenerateRandomPos(snakeBody);
     }
 
     ~Food() {
@@ -68,14 +80,25 @@ class Food {
 
     void Draw() {
         //DrawRectangle(position.x * cellSize, position.y * cellSize, cellSize, cellSize, darkGreen);
-        DrawTexture(texture, position.x * cellSize, position.y * cellSize, WHITE);
+        DrawTexture(texture, offset + position.x * cellSize, offset + position.y * cellSize, WHITE);
     }
 
-    Vector2 GenerateRandomPos() {
+    Vector2 GenerateRandomCell(){
 
         float x = GetRandomValue(0, cellCount - 1);
         float y = GetRandomValue(0, cellCount - 1);
-        return Vector2{x, y};
+        return Vector2{x,y};
+    }
+
+    Vector2 GenerateRandomPos(deque<Vector2> snakeBody) {
+
+        Vector2 position = GenerateRandomCell();
+        while(ElementinDeque(position, snakeBody)){
+
+            position = GenerateRandomCell();
+        }
+        
+    return position;
     }
 
 };
@@ -83,7 +106,7 @@ class Food {
 class Game {
     public: 
     Snake snake = Snake();
-    Food food = Food(); 
+    Food food = Food(snake.body); 
 
     void Draw() {
         food.Draw();
@@ -92,7 +115,17 @@ class Game {
 
     void Update () {
         snake.Update();
+        CheckCollisionWithFood();
     }
+
+    void CheckCollisionWithFood() {
+
+        if(Vector2Equals(snake.body[0], food.position)) {
+
+            //cout << "Food has been eaten!" << endl;
+            food.position = food.GenerateRandomPos(snake.body);
+        };
+    };
 };
 
 int main () {
